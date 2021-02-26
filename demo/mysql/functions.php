@@ -6,6 +6,23 @@
             $username = $_POST['username'];
             $password = $_POST['password'];
 
+            //Sanitize
+            $username = mysqli_real_escape_string($connection, $username);
+            $password = mysqli_real_escape_string($connection, $password);
+
+            //Encrypt
+            //there are several methods, we will use Blowfish
+            //https://www.php.net/manual/en/function.crypt.php
+
+            //Create hash from the websit
+            $hash_format = '$2y$10$';
+            //Create salt, it can be anything but longer than 21 characters
+            $salt = 'thisiscreazysaltsaltsaltiuseforencryption0';
+            $hashF_and_salt = $hash_format . $salt;
+            //Encrypt passsword
+            $password = crypt($password, $hashF_and_salt);
+
+
             $connection = mysqli_connect('localhost', 'root', '', 'loginapp');
             if($connection){
                 echo 'good';
